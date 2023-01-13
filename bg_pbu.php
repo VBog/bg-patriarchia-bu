@@ -7,6 +7,7 @@
     Author: VBog
     Author URI: https://bogaiskov.ru 
 	License:     GPL2
+	GitHub Plugin URI: https://github.com/VBog/bg-patriarchia-bu
 */
 
 /*  Copyright 2018-2023  Vadim Bogaiskov  (email: vadim.bogaiskov@gmail.com)
