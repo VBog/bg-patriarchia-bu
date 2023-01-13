@@ -3,7 +3,7 @@
     Plugin Name: Bg Patriarchia BU 
     Plugin URI: https://bogaiskov.ru/bg_pbu/
     Description: Plugin copies liturgical guides from the Patriarchia.ru and inserts them into a page on your site.
-    Version: 2.2.2
+    Version: 2.2.3
     Author: VBog
     Author URI: https://bogaiskov.ru 
 	License:     GPL2
@@ -37,7 +37,7 @@ if ( !defined('ABSPATH') ) {
 	die( 'Sorry, you are not allowed to access this page directly.' ); 
 }
 
-define('BG_PBU_VERSION', '2.2.2');
+define('BG_PBU_VERSION', '2.2.3');
 
 // Таблица стилей для плагина
 function bg_pbu_enqueue_frontend_styles () {
@@ -145,11 +145,13 @@ if ( !shortcode_exists( 'the_nextday' ) ) {
 		extract( shortcode_atts( array(
 			'title' => 'Следующий день ▶'	// Подпись на кнопке
 		), $atts ) );
+		$option = bg_pbu_get_option();
+		
 		$y = date ("Y", mktime ( 0, 0, 0 ));	// Текущий год
 		if (isset($_GET['date'])) {
 			$dd = $_GET["date"];
 			list($year, $month, $day) = explode("-",$dd);
-			if ($year < $y || $year > $y+1) return "";	// Генерировать ссылку только для текущего и следующего года
+			if ($year < $y-$option['years_before'] || $year > $y+$option['years_after']) return "";	// Генерировать ссылку только для разрешенного диапазона
 			$d = date ("U", mktime ( 0, 0, 0, $month, $day, $year ));
 		} else {
 			$d = date ("U", mktime ( 0, 0, 0 ));
@@ -169,12 +171,13 @@ if ( !shortcode_exists( 'the_prevday' ) ) {
 		extract( shortcode_atts( array(
 			'title' => '◀ Предыдущий день'	// Подпись на кнопке
 		), $atts ) );
+		$option = bg_pbu_get_option();
 		
 		$y = date ("Y", mktime ( 0, 0, 0 ));	// Текущий год
 		if (isset($_GET['date'])) {
 			$dd = $_GET["date"];
 			list($year, $month, $day) = explode("-",$dd);
-			if ($year < $y || $year > $y+1) return "";	// Генерировать ссылку только для текущего и следующего года
+			if ($year < $y-$option['years_before'] || $year > $y+$option['years_after']) return "";	// Генерировать ссылку только для разрешенного диапазона
 			$d = date ("U", mktime ( 0, 0, 0, $month, $day, $year ));
 		} else {
 			$d = date ("U", mktime ( 0, 0, 0 ));
